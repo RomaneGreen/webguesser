@@ -3,6 +3,13 @@ require 'sinatra/reloader'
 
 SECRET_NUMBER = rand(100)
 
+get '/' do 
+	guess = params["guess"].to_i 
+	message = check_guess(guess)[0] if guess != 0
+	body_class = check_guess(guess)[1] if guess != 0
+	erb :index, :locals => {:message => message, :body_class => body_class}
+end
+
 def check_guess(num)
 	if num > SECRET_NUMBER
 		if num > SECRET_NUMBER + 5
@@ -19,14 +26,6 @@ def check_guess(num)
 	else 
 		return "You got it right! The SECRET NUMBER is #{SECRET_NUMBER}.", "correct"
 	end
-end
-
-get '/' do 
-
-	guess = params["guess"].to_i 
-	message = check_guess(guess)[0]
-	body_class = check_guess(guess)[1]
-	erb :index, :locals => {:message => message, :body_class => body_class}
 end
 
 
