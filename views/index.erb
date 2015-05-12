@@ -1,6 +1,13 @@
 <html>
 	<head>
 		<style>
+			body {
+				font-family: sans-serif;
+			}
+			form {
+				padding-top: 20px;
+				margin-bottom: 20px;
+			}
 			.veryWrong {
 				background: red;
 			}
@@ -16,10 +23,12 @@
 
 
 		<body class="<%= body_class %>" >
-			<form>
+			<form method='POST'>
 				<input type='text' name='guess' />
 				<input type='submit'  value='Guess!' />
 			</form>
 			<%= message %>
+			<p>You have <%= @@counter %> guesses.</p>
+			<!--<%=secret_num%>-->
 		</body>
 </html>

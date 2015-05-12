@@ -1,30 +1,34 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-SECRET_NUMBER = rand(100)
+set :SECRET_NUMBER, rand(100)
+@@counter = 5
 
 get '/' do 
+	erb :index, :locals => {:secret_num => settings.SECRET_NUMBER, :message => "", :body_class => ""}
+end
+
+post '/' do
 	guess = params["guess"].to_i 
-	message = check_guess(guess)[0] if guess != 0
-	body_class = check_guess(guess)[1] if guess != 0
-	erb :index, :locals => {:message => message, :body_class => body_class}
+	message = check_guess(guess)
+	erb :index, :locals => {:secret_num => settings.SECRET_NUMBER, :message => message[0], :body_class => message[1]}
 end
 
 def check_guess(num)
-	if num > SECRET_NUMBER
-		if num > SECRET_NUMBER + 5
-			return "Way too high!", "veryWrong"
-		else
-			return "Too high!", "slightlyWrong"
-		end
-	elsif num < SECRET_NUMBER
-		if num < SECRET_NUMBER - 5
-			return "Way too low!", "veryWrong"
-		else
-			return "Too low!", "slightlyWrong"
-		end
-	else 
-		return "You got it right! The SECRET NUMBER is #{SECRET_NUMBER}.", "correct"
+	if num == settings.SECRET_NUMBER
+		@@counter = 5
+		settings.SECRET_NUMBER = rand(100)
+		return ["You got it right! The SECRET NUMBER is #{settings.SECRET_NUMBER}. Play again!", "correct"]
+	elsif @@counter == 1
+		@@counter = 5
+		settings.SECRET_NUMBER = rand(100)
+		["Sorry, you lost. You have to start all over again.", ""]
+	elsif num > settings.SECRET_NUMBER
+		@@counter -= 1
+		num > settings.SECRET_NUMBER + 5 ? ["Way too high!", "veryWrong"] : ["Too high!", "slightlyWrong"]
+	else
+		@@counter -= 1
+		num < settings.SECRET_NUMBER - 5 ? ["Way too low!", "veryWrong"] : ["Too low!", "slightlyWrong"]		
 	end
 end
 
