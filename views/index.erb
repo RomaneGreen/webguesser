@@ -1,6 +1,21 @@
 <html>
-	<head></head>
-		<body>
+	<head>
+		<style>
+			.veryWrong {
+				background: red;
+			}
+			.slightlyWrong {
+				background: #FFE6E6;
+			}
+			.correct {
+				background: green;
+			}
+
+		</style>
+	</head>
+
+
+		<body class="<%= body_class %>" >
 			<form>
 				<input type='text' name='guess' />
 				<input type='submit'  value='Guess!' />
