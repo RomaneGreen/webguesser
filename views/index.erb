@@ -23,12 +23,14 @@
 
 
 		<body class="<%= body_class %>" >
-			<form method='POST'>
-				<input type='text' name='guess' />
-				<input type='submit'  value='Guess!' />
+			<form>
+				<input type="text" name="guess" />
+				<input type="submit"  value="Guess!" />
 			</form>
 			<%= message %>
 			<p>You have <%= @@counter %> guesses.</p>
-			<!--<%=secret_num%>-->
+			<% if cheating == 'true' %>
+				<p>The secret number is <%= secret_num %> </p>
+			<%end%>
 		</body>
 </html>
